@@ -1,0 +1,40 @@
+## ARO Network Architecture Diagram ##
+https://learn.microsoft.com/en-us/azure/openshift/concepts-networking
+
+## Commands used in Demo ##
+
+Note - All below commands can be executed in any of the ovnkube-master pod running on master nodes in namespace 
+openshift-ovn-kubernetes
+
+## Access ovnkube-master pod running on control plane ##
+oc exec -it ovnkube-master-xxxx -n openshift-ovn-kubernetes -c northd -- bash
+
+## List out Logical Routers in the cluster ##
+ovn-nbctl lr-list
+
+## List out Logical Switches in the cluster ##
+ovn-nbctl ls-list
+
+## Check one of the Switches ##
+ovn-nbctl show logical-switch-name-shown-in-above-command
+
+## Check one of the Port on Logical Switches ##
+ovn-nbctl find logical_switch_port name=port-name-listed-from-above-command
+
+## List out Logical LoadBalancers in the cluster ##
+ovn-nbctl lb-list
+
+## Show logical gateway router natting list ##
+ovn-nbctl lr-nat-list GR_<node-name> or get the name of the gateway router from 'ovn-nbctl lr-list'
+
+## Show Loadbalancer construct mapped to service/endpoints ##
+ovn-nbctl lb-list | grep <namespace-of-service>
+OR
+ovn-nbctl find load_balancer name="Service_<namespace-of-service>/<name-of-service>_TCP_cluster"
+
+## List OVS dump-flows ##
+ovs-ofctl dump-flows br-int
+
+
+
+
